@@ -6,78 +6,145 @@ const Employee = require("./lib/Employee");
 const Manager = require("./lib/Manager");
 const Intern = require("./lib/Intern");
 const Engineer = require("./lib/Engineer");
-const { json } = require("stream/consumers");
 
+//Array for pushing new team members
+
+const teamMembers = [];
+
+//Add manager prompting function
+addManager = () => {
 inquirer
   .prompt([
     {
-      type: "list",
-      message: "what is the employees role?",
-      choices: ["Manager", "Engineer", "Intern"],
-      name: "role",
+      type: "input",
+      message: "Enter your manager's Name:",
+      name: "name",
     },
     {
       type: "input",
-      message: "What is the employees name?",
-      name: "employeeName",
+      message: "what is the manager's email address?",
+      name: "email",
     },
     {
       type: "input",
-      message: "what is the employees ID?",
+      message: "what is the manager's ID?",
       name: "id",
     },
     {
       type: "input",
-      message: "what is the employees email address?",
-      name: "email",
+      message: "what is the manager office number?",
+      name: "officeNumber",
     },
-    // {
-    //   type: "input",
-    //   message: "Enter the employees office number:",
-    //   name: "office",
-    // },
-    // {
-    //   type: "input",
-    //   message: "Please enter the employees gitHub:",
-    //   name: "gitHub",
-    // },
-    // {
-    //   type: "input",
-    //   message: "Please enter the employees school:",
-    //   name: "school",
-    // },
   ])
 
-  .then((response) => {
-    if (response.role === "Manager") {
-      inquirer.prompt({
+  .then((data) => {
+    const manager = new Manager(data.name, data.id, data.email, data.officeNumber);
+    teamMembers.push(manager);
+
+    addToTeam();
+  })}
+
+//Add Engineer function
+
+addEngineer = () => {
+  inquirer
+    .prompt([
+      {
         type: "input",
-        message: "what is your office number?",
-        name: "office",
-      });
-    } else if (response.role === "Engineer") {
-      inquirer.prompt({
+        message: "Enter your Engineer's Name:",
+        name: "name",
+      },
+      {
         type: "input",
-        message: "what is your gitHub?",
+        message: "what is the Engineer's email address?",
+        name: "email",
+      },
+      {
+        type: "input",
+        message: "what is the Engineer's ID?",
+        name: "id",
+      },
+      {
+        type: "input",
+        message: "what is the Engineer's GitHub userName?",
         name: "gitHub",
-      });
-    } else if (response.role === "Intern") {
-      inquirer.prompt({
-        type: "input",
-        message: "what is your school?",
-        name: "school",
-      });
+      },
+  
+    ])
+  
+    .then((data) => {
+      const engineer = new Engineer(data.name, data.id, data.email, data.gitHub);
+      teamMembers.push(engineer);
+  
+      addToTeam();
+    })}
+
+//Add intern prompting function
+
+addIntern = () => {
+      inquirer
+        .prompt([
+          {
+            type: "input",
+            message: "Enter your Intern's Name:",
+            name: "name",
+          },
+          {
+            type: "input",
+            message: "what is the Intern's email address?",
+            name: "email",
+          },
+          {
+            type: "input",
+            message: "what is the Intern's ID?",
+            name: "id",
+          },
+          {
+            type: "input",
+            message: "what school is the Intern attending?",
+            name: "school",
+          },
+      
+        ])
+      
+        .then((data) => {
+          const intern = new Intern(data.name, data.id, data.email, data.school);
+          teamMembers.push(intern);
+      
+          addToTeam();
+        })}
+
+//Prompt for forking path
+addToTeam = () => {
+      inquirer.prompt([{
+      type: 'list',
+      message: 'Would you like to add a new team member?',
+      name: 'profileOptions',
+      choices: ['Add Engineer', 'Add Intern', 'Generate Team Profile']
     }
-  })
+    ])
+    .then((data) => {
+    if (data.profileOptions === 'Add Engineer') {
+      addEngineer();
+      } else if (data.profileOptions === 'Add Intern') {
+      addIntern();
+    } else {
+    teamProfileGenerator();
+    }
+  });
+  }
+
+//
+
+
   .then((response) => writeHTMLfile(response));
 
 var writeHTMLfile = function (response) {
-  fs.writeFile("index.html", writeHTML(response), (err) =>
-    err ? console.error(err) : console.log("successfully written index.html!")
-  );
+  
 };
 
-const writeHTML = function (response) {
+teamProfileGenerator = () => {
+
   const HTML = `<!DOCTYPE html>
   <html lang="en">
     <head>
@@ -94,23 +161,37 @@ const writeHTML = function (response) {
       </header>
   
       <section>
-        <div class="employee-card">
-          <div class="card-header">
-            ${response.employeeName}
-            <br />
-            ${data.role}
-          </div>
-          <div class="employee-info">
-            <ul>
-              <li>${response.id}</li>
-              <li>${response.email}</li>
-              <li>${response.office}</li>
-            </ul>
-          </div>
-        </div>
+
+      ${teamBuilder(teamMembers)}
+
+
       </section>
     </body>
-  </html>
-  `;
-  return HTML;
+  </html>`;
+
+  fs.writeFile("teamProfile.html", HTML, (err) =>
+    err ? console.error(err) : console.log("successfully written teamProfile.html!")
+  );
 };
+
+teamBuilder = () => {
+
+
+
+
+}
+
+<div class="employee-card">
+<div class="card-header">
+  ${response.employee}
+  <br />
+  ${response.role}
+</div>
+<div class="employee-info">
+  <ul>
+    <li>${response.id}</li>
+    <li>${response.email}</li>
+    <li>${response.office}</li>
+  </ul>
+</div>
+</div>
