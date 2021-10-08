@@ -5,21 +5,25 @@
 header {
   background-color: red;
   height: 3em;
-  text-align: center;
+
   color: white;
   font-weight: bolder;
   font-size: 3em;
 }
 nav {
   padding-top: 1em;
+  padding-left: 12em;
 }
-
+#role {
+  font-size: 15px;
+}
 .employee-card {
   margin-top: 3em;
   margin-left: 5em;
   box-shadow: 5px 5px 10px 1px rgba(0, 0, 0, 0.7);
-  width: 5em;
   border-radius: 5px;
+  width: 250px;
+  line-height: 20px;
 }
 .card-header {
   background-color: rgb(36, 131, 255);
@@ -27,7 +31,8 @@ nav {
   padding-top: 10px;
   padding-left: 10px;
   padding-bottom: 10px;
-  border-radius: 5px;
+  border-radius: 5px 0px 50px 0px;
+  font-size: 20px;
 }
 
 .employee-info {
@@ -37,4 +42,5 @@ nav {
 }
 .employee-info li {
   list-style: none;
+  width: 250px;
 }
