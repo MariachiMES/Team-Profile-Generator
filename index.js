@@ -208,7 +208,7 @@ teamProfileGenerator = () => {
     </body>
   </html>`;
 
-  fs.writeFile("teamProfile.html", HTML, (err) =>
+  fs.writeFile("./dist/teamProfile.html", HTML, (err) =>
     err
       ? console.error(err)
       : console.log("successfully written teamProfile.html!")
